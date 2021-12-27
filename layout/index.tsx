@@ -41,7 +41,7 @@ function LayoutComponent(props: any) {
                 }}
             >
                 <div className="logo" style={{ padding: "10%" }}>
-                    <Image src="/images/todo.png" alt="DoToDo Logo" width={800} height={500} objectFit='contain' layout="responsive" />
+                    <Image priority src="/images/todo.png" alt="DoToDo Logo" width={800} height={500} objectFit='contain' layout="responsive" />
                 </div>
                 <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
                     <Menu.Item key="1" icon={<HomeOutlined />}>
