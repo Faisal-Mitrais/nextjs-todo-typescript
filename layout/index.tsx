@@ -4,12 +4,41 @@ import { FileDoneOutlined, HomeOutlined, IdcardOutlined, LineChartOutlined, Menu
 import { blue } from '@ant-design/colors';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const { Header, Content, Footer, Sider } = Layout;
 const normalWidht = "20%";
 const collapsedWidht = "80px";
 
+const menus = [
+    {
+        key: "1",
+        title: "Home",
+        path: "/home",
+        icon: <HomeOutlined />
+    },
+    {
+        key: "2",
+        title: "About",
+        path: "/about",
+        icon: <IdcardOutlined />
+    },
+    {
+        key: "3",
+        title: "Todo List",
+        path: "/todo",
+        icon: <FileDoneOutlined />
+    },
+    {
+        key: "4",
+        title: "Statistic",
+        path: "/statistic",
+        icon: <LineChartOutlined />
+    },
+]
+
 function LayoutComponent(props: any) {
+    const router = useRouter()
     const [widht, setWidht] = useState(normalWidht)
     const [collapsed, setCollapsed] = useState(false)
     const [isDesktop, setIsDesktop] = useState(true)
@@ -43,27 +72,14 @@ function LayoutComponent(props: any) {
                 <div className="logo" style={{ padding: "10%" }}>
                     <Image priority src="/images/todo.png" alt="DoToDo Logo" width={800} height={500} objectFit='contain' layout="responsive" />
                 </div>
-                <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1" icon={<HomeOutlined />}>
-                        <Link href="/home">
-                            Home
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="2" icon={<IdcardOutlined />}>
-                        <Link href="/about">
-                            About
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="3" icon={<FileDoneOutlined />}>
-                        <Link href="/todo">
-                            Todo List
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="4" icon={<LineChartOutlined />}>
-                        <Link href="/statistic">
-                            Statistic
-                        </Link>
-                    </Menu.Item>
+                <Menu theme="light" mode="inline" defaultSelectedKeys={[menus.find(menu => menu.path === router.pathname)?.key!]}>
+                    {menus.map(menu => (
+                        <Menu.Item key={menu.key} icon={menu.icon}>
+                            <Link href={menu.path}>
+                                {menu.title}
+                            </Link>
+                        </Menu.Item>
+                    ))}
                 </Menu>
             </Sider>
             <Layout style={{ marginLeft: isDesktop ? widht : `calc(${widht} + 10px)` }}>
@@ -77,7 +93,7 @@ function LayoutComponent(props: any) {
                         {props.children}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Modified by Faisal</Footer>
             </Layout>
         </Layout >
     )

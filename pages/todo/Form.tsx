@@ -1,20 +1,16 @@
 import { Form, Input, Button, Space, DatePicker } from 'antd';
-import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchTodos, addNewTodo } from '../../store/todo/todoSlice'
-import { RootState } from '../../store'
+import { useDispatch } from 'react-redux'
+import { fetchTodos, addNewTodo, updateTodo } from '../../store/todo/todoSlice'
 import { useEffect } from 'react';
+import { dateFormat } from '../../utils/constant';
+import moment from 'moment';
 
-const dateFormat = 'DD/MM/YYYY';
-
-const ToDoForm = () => {
-    const [form] = Form.useForm();
-    const todos = useSelector((state: RootState) => state.todos)
+const ToDoForm = ({ form }: { form: any }) => {
     const dispatch = useDispatch()
 
     const onFinish = (values: any) => {
-        values = { ...values, done: false }
-        dispatch(addNewTodo(values))
+        const { id, ...newValues } = values;
+        id === null ? dispatch(addNewTodo(newValues)) : dispatch(updateTodo(values))
         form.resetFields()
     };
 
@@ -27,12 +23,32 @@ const ToDoForm = () => {
     }, [dispatch])
 
     return (
-        <Form form={form} layout={'inline'} name="control-hooks" initialValues={{ description: '', deadline: '' }} onFinish={onFinish} >
-            <Form.Item name="description" label="Description" rules={[{ required: true }]} style={{ flex: "1", marginTop: "5px" }}>
+        <Form form={form} layout={'inline'} name="control-hooks" initialValues={{ id: null, description: '', deadline: '', done: false }} onFinish={onFinish} >
+            <Form.Item name="id" hidden>
+                <Input />
+            </Form.Item>
+            <Form.Item name="description" label="Description" rules={[{ required: true, max: 100 }]} style={{ flex: "1", marginTop: "5px" }}>
                 <Input onChange={(e: any) => form.setFieldsValue({ description: e.target.value })} placeholder='New task' />
             </Form.Item>
-            <Form.Item name="deadline" label="Deadline" rules={[{ required: true }]} style={{ flex: "1", marginTop: "5px" }}>
+            <Form.Item name="deadline" label="Deadline" style={{ flex: "1", marginTop: "5px" }}
+                rules={
+                    [
+                        { required: true },
+                        () => ({
+                            validator(_, value) {
+                                if (moment(value).isSameOrAfter(moment(), 'day')) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Deadline cannot be in the past'));
+                            },
+                        })
+                    ]
+                }
+            >
                 <DatePicker onChange={(e: any) => form.setFieldsValue({ deadline: e })} format={dateFormat} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="done" hidden>
+                <Input />
             </Form.Item>
             <Form.Item style={{ flex: "0 1", marginTop: "5px", display: 'inline-block' }}>
                 <Space>

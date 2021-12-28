@@ -9,3 +9,11 @@ export const getTodos = () => {
 export const addTodo = (data: any) => {
   return axios.post(baseUrl, data);
 };
+
+export const editTodo = (data: any) => {
+  return axios.put(`${baseUrl}/${data.id}`, data);
+};
+
+export const deleteTodo = (id: any) => {
+  return axios.delete(`${baseUrl}/${id}`);
+};
