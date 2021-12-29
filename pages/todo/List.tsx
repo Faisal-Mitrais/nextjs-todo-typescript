@@ -71,15 +71,15 @@ const TodoList = ({ data, form }: Props) => {
     onSelect: (record: Todo) => {
       dispatch(updateTodo({ ...record, done: !record.done }));
     },
-    selectedRowKeys: data.todos
-      .filter((todo) => todo.done)
-      .map((todo) => todo.id) as Key[],
+    selectedRowKeys: data?.todos
+      ?.filter((todo) => todo.done)
+      ?.map((todo) => todo.id) as Key[],
   };
 
   return (
     <div>
       <Table
-        loading={data.isLoading}
+        loading={data?.isLoading}
         rowSelection={{
           type: 'checkbox',
           hideSelectAll: true,
@@ -87,7 +87,7 @@ const TodoList = ({ data, form }: Props) => {
         }}
         pagination={{ pageSize: 5 }}
         columns={columns}
-        dataSource={data.todos.map((todo) => ({ ...todo, key: todo.id }))}
+        dataSource={data?.todos?.map((todo) => ({ ...todo, key: todo.id }))}
       />
     </div>
   );
