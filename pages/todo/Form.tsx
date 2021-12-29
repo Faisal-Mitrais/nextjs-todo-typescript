@@ -60,7 +60,7 @@ const ToDoForm = ({ form }: { form: FormInstance }) => {
                 return Promise.resolve();
               }
               return Promise.reject(
-                new Error('Deadline cannot be in the past')
+                new Error("'deadline' cannot be in the past")
               );
             },
           }),
