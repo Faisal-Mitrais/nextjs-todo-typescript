@@ -1,12 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { isMoment } from "moment";
-import {
-  addTodo,
-  deleteTodo,
-  editTodo,
-  getTodos,
-} from "../../services/api/todoApi";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { isMoment } from 'moment';
+import { addTodo, deleteTodo, editTodo, getTodos } from 'services/api/todoApi';
 
 export interface Todo {
   id?: string | number;
@@ -28,7 +22,7 @@ const initialState: TodoState = {
 };
 
 export const fetchTodos = createAsyncThunk(
-  "todo/getAll",
+  'todo/getAll',
   async (_, { rejectWithValue }) => {
     return await getTodos()
       .then((res) => {
@@ -40,8 +34,8 @@ export const fetchTodos = createAsyncThunk(
   }
 );
 
-export const addNewTodo = createAsyncThunk<any, Todo>(
-  "todo/addNewTodo ",
+export const addNewTodo = createAsyncThunk<Todo, Todo>(
+  'todo/addNewTodo ',
   async (data, { rejectWithValue }) => {
     return await addTodo(data)
       .then((res) => {
@@ -53,11 +47,11 @@ export const addNewTodo = createAsyncThunk<any, Todo>(
   }
 );
 
-export const updateTodo = createAsyncThunk<any, Todo>(
-  "todo/updateTodo ",
+export const updateTodo = createAsyncThunk<Todo, Todo>(
+  'todo/updateTodo ',
   async (data, { rejectWithValue }) => {
     return await editTodo(data)
-      .then((_) => {
+      .then(() => {
         return isMoment(data.deadline)
           ? { ...data, deadline: data.deadline.format() }
           : data;
@@ -68,11 +62,11 @@ export const updateTodo = createAsyncThunk<any, Todo>(
   }
 );
 
-export const removeTodo = createAsyncThunk<any, string | number>(
-  "todo/removeTodo ",
+export const removeTodo = createAsyncThunk<string | number, string | number>(
+  'todo/removeTodo ',
   async (id, { rejectWithValue }) => {
     return await deleteTodo(id)
-      .then((_) => {
+      .then(() => {
         return id;
       })
       .catch((err) => {
@@ -82,7 +76,7 @@ export const removeTodo = createAsyncThunk<any, string | number>(
 );
 
 export const counterSlice = createSlice({
-  name: "todo",
+  name: 'todo',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
