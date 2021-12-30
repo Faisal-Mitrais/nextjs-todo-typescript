@@ -15,7 +15,7 @@ export interface TodoState {
   todos: Todo[];
 }
 
-const initialState: TodoState = {
+export const initialState: TodoState = {
   isLoading: false,
   isFailed: false,
   todos: [],
@@ -26,7 +26,7 @@ export const fetchTodos = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     return await getTodos()
       .then((res) => {
-        return res.data;
+        return res;
       })
       .catch((err) => {
         return rejectWithValue(err);
@@ -35,11 +35,11 @@ export const fetchTodos = createAsyncThunk(
 );
 
 export const addNewTodo = createAsyncThunk<Todo, Todo>(
-  'todo/addNewTodo ',
+  'todo/addNewTodo',
   async (data, { rejectWithValue }) => {
     return await addTodo(data)
       .then((res) => {
-        return res.data;
+        return res;
       })
       .catch((err) => {
         return rejectWithValue(err);
@@ -48,7 +48,7 @@ export const addNewTodo = createAsyncThunk<Todo, Todo>(
 );
 
 export const updateTodo = createAsyncThunk<Todo, Todo>(
-  'todo/updateTodo ',
+  'todo/updateTodo',
   async (data, { rejectWithValue }) => {
     return await editTodo(data)
       .then(() => {
@@ -63,7 +63,7 @@ export const updateTodo = createAsyncThunk<Todo, Todo>(
 );
 
 export const removeTodo = createAsyncThunk<string | number, string | number>(
-  'todo/removeTodo ',
+  'todo/removeTodo',
   async (id, { rejectWithValue }) => {
     return await deleteTodo(id)
       .then(() => {

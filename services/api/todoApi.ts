@@ -3,18 +3,26 @@ import { Todo } from 'store/todo/todoSlice';
 
 const baseUrl: string = process.env.NEXT_PUBLIC_BASE_URL ?? '';
 
-export const getTodos = () => {
-  return axios.get(baseUrl);
+export const getTodos = async () => {
+  return await axios.get(baseUrl).then((res) => {
+    return res?.data;
+  });
 };
 
-export const addTodo = (data: Todo) => {
-  return axios.post(baseUrl, data);
+export const addTodo = async (data: Todo) => {
+  return await axios.post(baseUrl, data).then((res) => {
+    return res?.data;
+  });
 };
 
-export const editTodo = (data: Todo) => {
-  return axios.put(`${baseUrl}/${data.id}`, data);
+export const editTodo = async (data: Todo) => {
+  return await axios.put(`${baseUrl}/${data.id}`, data).then(() => {
+    return data;
+  });
 };
 
-export const deleteTodo = (id: string | number) => {
-  return axios.delete(`${baseUrl}/${id}`);
+export const deleteTodo = async (id: string | number) => {
+  return await axios.delete(`${baseUrl}/${id}`).then(() => {
+    return id;
+  });
 };
