@@ -21,7 +21,7 @@ const menus = [
   {
     key: '1',
     title: 'Home',
-    path: '/home',
+    path: '/',
     icon: <HomeOutlined />,
   },
   {
